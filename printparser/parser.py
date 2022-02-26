@@ -5,7 +5,11 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from printparser.models import Prints
 
-driver = webdriver.Chrome(ChromeDriverManager().install())
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+sleep(5)
+driver = webdriver.Remote(command_executor='http://localhost:4444/wd/hub', desired_capabilities=DesiredCapabilities.CHROME)
+
+# driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get("http://factorioprints.com/top/")
 driver.implicitly_wait(10)
 
