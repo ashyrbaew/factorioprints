@@ -4,26 +4,46 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from printparser.models import Prints
-
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-sleep(5)
-driver = webdriver.Remote(command_executor='http://localhost:4444/wd/hub', desired_capabilities=DesiredCapabilities.CHROME)
 
-# driver = webdriver.Chrome(ChromeDriverManager().install())
-driver.get("http://factorioprints.com/top/")
-driver.implicitly_wait(10)
+
+def driver():
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--window-size=1920x1080')
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--remote-debugging-port=9230")
+    capabilities = {'browserName': 'chrome', 'javascriptEnabled': True}
+    capabilities.update(chrome_options.to_capabilities())
+
+    # driver = webdriver.Remote(
+    #     command_executor='http://localhost:4444/wd/hub',
+    #     desired_capabilities=capabilities
+    # )
+
+    driver = webdriver.Chrome(
+        ChromeDriverManager().install(),
+        desired_capabilities = capabilities
+    )
+    driver.get("http://factorioprints.com/top/")
+    driver.implicitly_wait(10)
+
+    return driver
 
 
 def get_item_urls():
+    global browser
+    browser=driver()
     item_url_list = []
-    max_page = 2
-    last_page = 0
+    max_page = 1
+    last_page = 1
 
-    while last_page < max_page:
+    while last_page <= max_page:
         last_page += 1
         next_page_button_xpath = "//*[contains(text(), 'Next Page')]"
-        button = driver.find_elements(By.XPATH, next_page_button_xpath)
-        page_links = driver.find_elements(By.XPATH, "//*[contains(@class, 'container-fluid')]/div[3]//a")
+        button = browser.find_elements(By.XPATH, next_page_button_xpath)
+        page_links = browser.find_elements(By.XPATH, "//*[contains(@class, 'container-fluid')]/div[3]//a")
         for lnk in page_links:
             item_url_list.append(lnk.get_attribute("href"))
 
@@ -40,24 +60,24 @@ def save_item_details(item_url_list, item_key):
     item = Prints.objects.filter(key=item_key)
 
     def write_to_db(model_item):
-        driver.find_elements(By.XPATH, "//*[contains(@class, 'card')]//*[contains(@class, 'card-body')]/button[2]")[0].send_keys(u'\ue006')
-        model_item.image = driver.find_elements(By.XPATH, "//*[@class='col-md-4']/a/img")[0].get_attribute('src')
-        model_item.details = driver.find_elements(By.XPATH,"//*[contains(@class, 'card')]//*[contains(@class, 'card-body')]/div")[0].text
-        model_item.author = driver.find_elements(By.XPATH, "//div['card']/table/tbody/tr[1]/td[2]")[0].text
-        model_item.created_at = driver.find_elements(By.XPATH,"//div['card']/table/tbody/tr[2]/td[2]/span")[0].get_attribute("title")
-        model_item.updated_at = driver.find_elements(By.XPATH, "//div['card']/table/tbody/tr[3]/td[2]/span")[0].get_attribute("title")
-        model_item.favorites = driver.find_elements(By.XPATH, "//div['card']/table/tbody/tr[4]/td[2]")[0].text
-        model_item.blueprint = driver.find_elements(By.XPATH, "//div[@class='card-body']/div[@class='blueprintString']")[0].text
+        browser.find_elements(By.XPATH, "//*[contains(@class, 'card')]//*[contains(@class, 'card-body')]/button[2]")[0].send_keys(u'\ue006')
+        model_item.image = browser.find_elements(By.XPATH, "//*[@class='col-md-4']/a/img")[0].get_attribute('src')
+        model_item.details = browser.find_elements(By.XPATH,"//*[contains(@class, 'card')]//*[contains(@class, 'card-body')]/div")[0].text
+        model_item.author = browser.find_elements(By.XPATH, "//div['card']/table/tbody/tr[1]/td[2]")[0].text
+        model_item.created_at = browser.find_elements(By.XPATH,"//div['card']/table/tbody/tr[2]/td[2]/span")[0].get_attribute("title")
+        model_item.updated_at = browser.find_elements(By.XPATH, "//div['card']/table/tbody/tr[3]/td[2]/span")[0].get_attribute("title")
+        model_item.favorites = browser.find_elements(By.XPATH, "//div['card']/table/tbody/tr[4]/td[2]")[0].text
+        model_item.blueprint = browser.find_elements(By.XPATH, "//div[@class='card-body']/div[@class='blueprintString']")[0].text
         model_item.save()
 
     if item:
             item.key = item_key
-            driver.get(f'http://factorioprints.com/view/{item_key}')
+            browser.get(f'http://factorioprints.com/view/{item_key}')
             write_to_db(item)
     else:
         for lnk in item_url_list:
             item = Prints()
-            driver.get(lnk)
+            browser.get(lnk)
             item.key = lnk.split("/")[-1]
             write_to_db(item)
 
@@ -74,5 +94,6 @@ def update_prints():
             items_in_db.remove(key)
 
     Prints.objects.filter(key__in=items_in_db).delete()
+    browser.close()
     return HttpResponse("total_items_link")
 
