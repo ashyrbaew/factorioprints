@@ -1,6 +1,7 @@
 from time import sleep
 from django.http import HttpResponse
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from printparser.models import Prints
@@ -8,14 +9,15 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 def driver():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('headless')
-    chrome_options.add_argument('window-size=1920x1080')
-    chrome_options.add_argument("no-sandbox")
-    chrome_options.add_argument("disable-dev-shm-usage")
-    chrome_options.add_argument("remote-debugging-port=9230")
-    capabilities = {'browserName': 'chrome', 'javascriptEnabled': True}
-    capabilities.update(chrome_options.to_capabilities())
+    chrome_options = Options()
+    chrome_options.headless=True
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--remote-debugging-port=9230')
+    chrome_options.add_argument('--window-size=1920x1080')
+
 
     # driver = webdriver.Remote(
     #     command_executor='http://localhost:4444/wd/hub',
@@ -24,7 +26,7 @@ def driver():
 
     driver = webdriver.Chrome(
         ChromeDriverManager().install(),
-        desired_capabilities = capabilities
+        options=chrome_options
     )
     driver.get("http://factorioprints.com/top/")
     driver.implicitly_wait(10)
