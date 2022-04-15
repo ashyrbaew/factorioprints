@@ -17,8 +17,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Running Project locally
-## Enter to core dorectory of project and start development server
+## Running Project locally, enter to core dorectory of project and start development server
 
 ```bash
 ./manage.py runserver
