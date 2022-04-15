@@ -53,6 +53,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'factorioprints.wsgi.application'
 
+# to check locally, uncomment below db settings
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -60,27 +61,27 @@ WSGI_APPLICATION = 'factorioprints.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'factorioprints',
-#         'USER': 'factorio',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'db',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'factorioprints',
-        'USER': 'akylbek',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'USER': 'factorio',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'factorioprints',
+#         'USER': 'akylbek',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
