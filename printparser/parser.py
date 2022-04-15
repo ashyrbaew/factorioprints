@@ -19,15 +19,16 @@ def driver():
     chrome_options.add_argument('--window-size=1920x1080')
 
 
-    # driver = webdriver.Remote(
-    #     command_executor='http://localhost:4444/wd/hub',
-    #     desired_capabilities=capabilities
-    # )
-
-    driver = webdriver.Chrome(
-        ChromeDriverManager().install(),
+    driver = webdriver.Remote(
+        command_executor='http://chromebrowser:4444/wd/hub',
         options=chrome_options
     )
+
+    # driver = webdriver.Chrome(
+    #     ChromeDriverManager().install(),
+    #     options=chrome_options
+    # )
+
     driver.get("http://factorioprints.com/top/")
     driver.implicitly_wait(10)
 
