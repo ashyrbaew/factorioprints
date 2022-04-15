@@ -38,7 +38,6 @@ services:
     links:
       - chrome
 
-#
 #  chrome:
 #    image: selenium/node-chrome:4.1.2-20220217
 #    shm_size: 2gb
@@ -56,29 +55,20 @@ services:
 #      - "4442:4442"
 #      - "4443:4443"
 #      - "4444:4444"
-#
-#  nginx:
-#    image: nginx:latest
-#    container_name: nginx
-#    restart: unless-stopped
-#    volumes:
-#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-#      - ./nginx/conf.d:/etc/nginx/conf.d
-#      - ./nginx/certbot/conf:/etc/letsencrypt
-#      - ./nginx/certbot/www:/var/www/certbot
-#      - ./static:/app/static
-#      - ./media:/app/media
-#      - ./media/images:/app/media/images
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-#
-#  certbot:
-#    image: certbot/certbot:latest
-#    container_name: certbot
-#    restart: unless-stopped
-#    volumes:
-#      - ./nginx/certbot/conf:/etc/letsencrypt
-#      - ./nginx/certbot/www:/var/www/certbot
-#    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./static:/app/static
+      - ./media:/app/media
+      - ./media/images:/app/media/images
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
