@@ -18,12 +18,13 @@ def driver():
     chrome_options.add_argument('--remote-debugging-port=9230')
     chrome_options.add_argument('--window-size=1920x1080')
 
-
+    # comment below code to run app in localserver
     driver = webdriver.Remote(
         command_executor='http://chromebrowser:4444/wd/hub',
         options=chrome_options
     )
 
+    # uncomment below code to run app in localserver
     # driver = webdriver.Chrome(
     #     ChromeDriverManager().install(),
     #     options=chrome_options
