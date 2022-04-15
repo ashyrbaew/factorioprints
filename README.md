@@ -1,6 +1,6 @@
 # Web scrapper for factorioprints.com/top
 
-Tech stack used in Project:
+Technical requirements for Project:
 Language: Python 3.8
 Framework: Django 3.0
 API Framework: FastAPI
@@ -18,10 +18,10 @@ pip install -r requirements.txt
 ```
 
 # Running Project locally
-## Starting development server
+## Enter to core dorectory of project and start development server
 
 ```bash
-./manage.py runserver --settings estekg.settings.dev
+./manage.py runserver
 ```
 
 #Starting Project at Production server
@@ -34,20 +34,30 @@ docker-compose up
 
 ## Architecture
 
-**Views** - contain logic for accepting request data and passing to Forms and Services
+**admin** - contains admin panel settings and configurations,
 
-**Services** - contain business logic only
+**Views** - contains logic for accepting request data and passing to Forms and Services
 
-**Models** - contain data and object presentation logic
+**Urls** - contains URL matching patterns with Views
 
-**Forms** - contain logic for validating if request data is clean, exists and of proper format and shape.
+**Models** - contains data and object presentation logic
 
-Read more about Services layer to get more understanding. Read more about Single Responsibility Principle.
+**Settings** - Contains Project common settings like DB, Time, etc
+
+**Api** - contains only API presentation app implemented with FastAPI framework
+
+## **Project Workflow Description**
+
+This parser project build with Django and Selenium to scrape data from and used FastAPI for API constraction
+Start project locally, go to localhost:8000 url in browser, you will see 2 url paths
+
+first one is for scrapping factorioprints/top second one is for update existing prints in db every minute
+so, if some prints dissapears from original website id will update our databse accordingly
+to view current prinst just start FastAPI project which is located in API directory and check url locally
 
 
 ## nginx
 
 Nginx is used as a reverse proxy server, thus, all web traffic goes though it and Django is not in public network.
-Since every subdomain uses different landing pages, the solution is to dispatch traffic using Host request header.
 See more details at nginx configs at nginx/conf.d/sites-available
 
