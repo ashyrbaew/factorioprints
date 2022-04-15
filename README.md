@@ -17,20 +17,23 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-# Running Project locally
+## Running Project locally
 ## Enter to core dorectory of project and start development server
 
 ```bash
 ./manage.py runserver
 ```
 
-#Starting Project at Production server
-## Starting server
+
+## Starting Project at Production server
+
+### Starting server
 
 ```bash
 docker-compose build .
 docker-compose up
 ```
+
 
 ## Architecture
 
@@ -45,6 +48,7 @@ docker-compose up
 **Settings** - Contains Project common settings like DB, Time, etc
 
 **Api** - contains only API presentation app implemented with FastAPI framework
+
 
 ## **Project Workflow Description**
 
