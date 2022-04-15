@@ -1,0 +1,30 @@
+# ignore .git and .cache folders
+.git
+.venv
+.cache
+
+**/*.pyc
+
+
+# ignore all markdown files (md) beside all README*.md other than README-secret.md
+*.md
+!README*.md
+README-secret.md
+
+
+# db files
+db.sqlite3
+
+
+# nginx configs
+nginx/
+
+
+# docker
+Dockerfile
+docker-compose.yaml
+docker-compose.unittest.yaml
+docker-compose.prod.yaml
+docker-compose.staging.yaml
+
+postgres_data/

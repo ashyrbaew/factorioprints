@@ -1,0 +1,74 @@
+version: '3'
+services:
+  db:
+    image: postgres:13
+    container_name: db
+    volumes:
+      - ./postgres_data/:/var/lib/postgresql/
+    environment:
+      - POSTGRES_USER=factorio
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=factorioprints
+      - TZ=Asia/Bishkek
+    ports:
+      - 5432:5432
+
+
+  chrome:
+    image: selenium/standalone-chrome
+    hostname: chromebrowser
+    ports:
+      - "4444:4444"
+
+  scrapper:
+    build: .
+    container_name: scrapper
+    environment:
+      - DJANGO_SETTINGS_MODULE=factorioprints.settings
+    ports:
+      - 8000:8000
+    depends_on:
+#      - nginx
+      - chrome
+      - db
+    volumes:
+    - ./static:/app/static
+    - ./media:/app/media
+    - ./media/images:/app/media/images
+    links:
+      - chrome
+
+#  chrome:
+#    image: selenium/node-chrome:4.1.2-20220217
+#    shm_size: 2gb
+#    depends_on:
+#      - selenium-hub
+#    environment:
+#      - SE_EVENT_BUS_HOST=selenium-hub
+#      - SE_EVENT_BUS_PUBLISH_PORT=4442
+#      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+#
+#  selenium-hub:
+#    image: selenium/hub:4.1.2-20220217
+#    container_name: selenium-hub
+#    ports:
+#      - "4442:4442"
+#      - "4443:4443"
+#      - "4444:4444"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+      - ./static:/app/static
+      - ./media:/app/media
+      - ./media/images:/app/media/images
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
