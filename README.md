@@ -1,39 +1,48 @@
 # Web scrapper for factorioprints.com/top
 
-Technical requirements for Project:
-Language: Python 3.8
-Framework: Django 3.0
-API Framework: FastAPI
-Scrapy software: Selenium
-Message broker: RabbitMQ
-Task Scheduler: Celery
+### Technical requirements for Project:
+
+Python 3.8, Django 3.0, FastAPI, Selenium, RabbitMQ, Celery as a task manager
+
+---
+
+## Project Description
+
+This parser project created with Django and Selenium to scrape data from https://factorioprints.com/top.
+With the help of FastAPI constracted API seprarately wthin **api** folder. The project can parse and
+update already saved prints in every minute according to original website.
+Start project locally, go to localhost:8000 url in browser, you will see 2 main url paths,
+first one is for scrapping factorioprints/top second one is for update existing prints in db every minute
+
+deafault configuration set up to parse 10 pages, if you want to change it, you can always do it in
+within parser.py file
+
+---
 
 ## Installation Steps:
 
 ```bash
-git clone
-virtualenv -p python3.8 .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+$git clone
+$virtualenv -p python3.8 .venv
+$source .venv/bin/activate
+$pip install -r requirements.txt
 ```
 
-## Running Project locally
-## Enter to core dorectory of project and start development server
+### Running Project locally, enter to core dorectory of project and start development server
 
 ```bash
-./manage.py runserver
+$./manage.py runserver
 ```
 
 
-## Starting Project at Production server
-
-### Starting server
+### Starting Project at Production server
 
 ```bash
-docker-compose build .
-docker-compose up
+$docker-compose build .
+$docker-compose up
 ```
 
+---
 
 ## Architecture
 
@@ -48,16 +57,6 @@ docker-compose up
 **Settings** - Contains Project common settings like DB, Time, etc
 
 **Api** - contains only API presentation app implemented with FastAPI framework
-
-
-## **Project Workflow Description**
-
-This parser project build with Django and Selenium to scrape data from and used FastAPI for API constraction
-Start project locally, go to localhost:8000 url in browser, you will see 2 url paths
-
-first one is for scrapping factorioprints/top second one is for update existing prints in db every minute
-so, if some prints dissapears from original website id will update our databse accordingly
-to view current prinst just start FastAPI project which is located in API directory and check url locally
 
 
 ## nginx
