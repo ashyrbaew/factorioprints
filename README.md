@@ -28,14 +28,14 @@ $source .venv/bin/activate
 $pip install -r requirements.txt
 ```
 
-## Running Project locally, enter to core dorectory of project and start development server
+### Running Project locally, enter to core dorectory of project and start development server
 
 ```bash
 $./manage.py runserver
 ```
 
 
-## Starting Project at Production server
+### Starting Project at Production server
 
 ```bash
 $docker-compose build .
