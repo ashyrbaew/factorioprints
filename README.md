@@ -1,7 +1,7 @@
 # Web scrapper for factorioprints.com/top
 
 Technical requirements for Project:
-Language: Python 3.8
+Language: Python 3.8 \n
 Framework: Django 3.0
 API Framework: FastAPI
 Scrapy software: Selenium
