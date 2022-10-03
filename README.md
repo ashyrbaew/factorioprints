@@ -2,7 +2,14 @@
 
 ### Technical requirements for Project:
 
-Python 3.8, Django 3.0, FastAPI, Selenium, RabbitMQ, Celery as a task manager
+1) Python 3.8, 
+2) Django 3.0, 
+3) FastAPI, 
+4) Selenium, 
+5) RabbitMQ, 
+6) Celery as a task manager
+7) Docker
+8) PostgreSQL
 
 ---
 
